@@ -275,39 +275,39 @@ const App: React.FC = () => {
                 /* 常规分类显示为分组 */
                 <>
                   {displayCategories.map((category, catIndex) => (
-                  <section key={category} className="space-y-10">
-                  <div className="flex items-center gap-6">
-                    <div className="flex flex-col">
-                      <span className="font-mono text-[10px] text-teal-500/60 tracking-[0.4em] uppercase mb-1">
-                        0{catIndex + 1} // Segment
-                      </span>
-                      <h2 className="text-3xl font-bold tracking-tighter text-white/90 uppercase">
-                        {category}
-                      </h2>
-                    </div>
-                    <div className="flex-grow h-[1px] bg-gradient-to-r from-teal-500/20 via-white/5 to-transparent"></div>
-                  </div>
+                    <section key={category} className="space-y-10">
+                      <div className="flex items-center gap-6">
+                        <div className="flex flex-col">
+                          <span className="font-mono text-[10px] text-teal-500/60 tracking-[0.4em] uppercase mb-1">
+                            0{catIndex + 1} // Segment
+                          </span>
+                          <h2 className="text-3xl font-bold tracking-tighter text-white/90 uppercase">
+                            {category}
+                          </h2>
+                        </div>
+                        <div className="flex-grow h-[1px] bg-gradient-to-r from-teal-500/20 via-white/5 to-transparent"></div>
+                      </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {groupedTools[category]?.map(tool => (
-                      <motion.div
-                        key={tool.id}
-                        layout
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ToolCard
-                          tool={tool}
-                          isFavorite={isFavorite(tool.id)}
-                          onToggleFavorite={toggleFavorite}
-                          onToolClick={handleToolClick}
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        {groupedTools[category]?.map(tool => (
+                          <motion.div
+                            key={tool.id}
+                            layout
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <ToolCard
+                              tool={tool}
+                              isFavorite={isFavorite(tool.id)}
+                              onToggleFavorite={toggleFavorite}
+                              onToolClick={handleToolClick}
+                            />
+                          </motion.div>
+                        ))}
+                      </div>
+                    </section>
                   ))}
                 </>
             </motion.div>
