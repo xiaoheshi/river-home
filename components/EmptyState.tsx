@@ -2,22 +2,23 @@
 import React, { useState, useCallback, useRef } from 'react';
 
 interface EmptyStateProps {
-  onReset: () => void;
+  onReset?: () => void;
   query?: string;
+  type?: 'search' | 'favorites' | 'recent';
 }
 
-export const EmptyState: React.FC<EmptyStateProps> = ({ onReset, query }) => {
+export const EmptyState: React.FC<EmptyStateProps> = ({ onReset, query, type = 'search' }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
-    
+
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     const percentX = (x - centerX) / centerX;
@@ -37,6 +38,33 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onReset, query }) => {
   const handleMouseLeave = useCallback(() => {
     setRotate({ x: 0, y: 0 });
   }, []);
+
+  // 根据类型定义不同的内容
+  const content = {
+    search: {
+      icon: '🔍',
+      title: query ? `支流扫描无果: <span class="text-teal-400 font-mono">"${query}"</span>` : '流域尚未汇集数据',
+      status: 'Flow Analysis: No Match',
+      description: '我们的观测仪已搜索了晓河所有数字支流的尽头。看起来您寻找的信息尚未汇入当前的 Nexus 流域，或者处于下游未同步区域。',
+      actionText: '重置流域同步'
+    },
+    favorites: {
+      icon: '⭐',
+      title: '流域暂无收藏',
+      status: 'Star Collection: Empty',
+      description: '点击工具卡片上的星星图标，将常用的工具标记为收藏，方便日后快速访问。',
+      actionText: '浏览全部工具'
+    },
+    recent: {
+      icon: '🕐',
+      title: '流域未有足迹',
+      status: 'Usage History: Clear',
+      description: '开始探索这些有趣的工具吧！您的使用记录会自动保存在这里，方便您回溯最近的数字旅程。',
+      actionText: '开始探索'
+    }
+  };
+
+  const currentContent = content[type];
 
   return (
     <div 
@@ -87,41 +115,43 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onReset, query }) => {
       {/* 文本内容 */}
       <div className="text-center z-20 space-y-6 px-10 max-w-2xl">
         <div className="space-y-3">
-          <h3 className="text-3xl font-bold text-white tracking-tight">
-            {query ? (
-              <>支流扫描无果: <span className="text-teal-400 font-mono">"{query}"</span></>
-            ) : (
-              '流域尚未汇集数据'
-            )}
-          </h3>
+          <div className="text-6xl mb-4">{currentContent.icon}</div>
+          <h3
+            className="text-3xl font-bold text-white tracking-tight"
+            dangerouslySetInnerHTML={{ __html: currentContent.title }}
+          />
           <div className="flex items-center justify-center gap-3 text-[10px] font-mono text-teal-500/40 uppercase tracking-[0.4em]">
             <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span>
-            Flow Analysis: No Match
+            {currentContent.status}
           </div>
         </div>
-        
+
         <p className="text-slate-400 font-light leading-relaxed text-lg">
-          我们的观测仪已搜索了晓河所有数字支流的尽头。看起来您寻找的信息尚未汇入当前的 Nexus 流域，或者处于下游未同步区域。
+          {currentContent.description}
         </p>
       </div>
 
       {/* 交互按钮 */}
-      <div className="mt-14 flex flex-col sm:flex-row gap-6 z-20">
-        <button 
-          onClick={onReset}
-          className="group relative px-12 py-4 rounded-full bg-teal-600 text-white font-bold shadow-[0_0_30px_rgba(20,184,166,0.2)] hover:shadow-[0_0_50px_rgba(20,184,166,0.4)] hover:-translate-y-1 transition-all active:scale-95 overflow-hidden"
-        >
-          <span className="relative z-10 tracking-[0.2em] uppercase text-xs">重置流域同步</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:animate-[shimmer_2s_infinite] pointer-events-none"></div>
-        </button>
-        
-        <button 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="px-12 py-4 rounded-full border border-white/5 text-slate-500 font-bold hover:text-white hover:bg-white/5 transition-all text-xs tracking-[0.2em] uppercase"
-        >
-          优化检索频率
-        </button>
-      </div>
+      {onReset && (
+        <div className="mt-14 flex flex-col sm:flex-row gap-6 z-20">
+          <button
+            onClick={onReset}
+            className="group relative px-12 py-4 rounded-full bg-teal-600 text-white font-bold shadow-[0_0_30px_rgba(20,184,166,0.2)] hover:shadow-[0_0_50px_rgba(20,184,166,0.4)] hover:-translate-y-1 transition-all active:scale-95 overflow-hidden"
+          >
+            <span className="relative z-10 tracking-[0.2em] uppercase text-xs">{currentContent.actionText}</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:animate-[shimmer_2s_infinite] pointer-events-none"></div>
+          </button>
+
+          {type === 'search' && (
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="px-12 py-4 rounded-full border border-white/5 text-slate-500 font-bold hover:text-white hover:bg-white/5 transition-all text-xs tracking-[0.2em] uppercase"
+            >
+              优化检索频率
+            </button>
+          )}
+        </div>
+      )}
 
       {/* 侧边装饰代码 */}
       <div className="absolute top-1/4 left-16 opacity-5 text-[9px] font-mono text-teal-300 hidden xl:block">

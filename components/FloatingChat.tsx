@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getAssistantResponse } from '../services/geminiService';
 import { ChatMessage } from '../types';
+import { analyticsService } from '../services/analyticsService';
 
 export const FloatingChat: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,7 @@ export const FloatingChat: React.FC = () => {
 
   const handleSend = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    
+
     const currentInput = input.trim();
     if (!currentInput || isTyping) return;
 
@@ -29,21 +30,27 @@ export const FloatingChat: React.FC = () => {
     setInput('');
     setIsTyping(true);
 
+    // 追踪发送消息
+    analyticsService.trackChatInteraction('send');
+
     try {
       const response = await getAssistantResponse(
-        messages.map(m => ({ role: m.role, content: m.content })), 
+        messages.map(m => ({ role: m.role, content: m.content })),
         currentInput
       );
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: response || "信号在支流中迷失了，请重试。", 
-        timestamp: Date.now() 
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: response || "信号在支流中迷失了，请重试。",
+        timestamp: Date.now()
       }]);
+
+      // 追踪接收回复
+      analyticsService.trackChatInteraction('receive');
     } catch (err) {
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: "流域连接中断，River Core 正在重连。", 
-        timestamp: Date.now() 
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: "流域连接中断，River Core 正在重连。",
+        timestamp: Date.now()
       }]);
     } finally {
       setIsTyping(false);
