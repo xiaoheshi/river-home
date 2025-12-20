@@ -9,12 +9,17 @@ import { AboutSection } from './components/AboutSection';
 import { TOOLS, CATEGORIES } from './constants.tsx';
 import { Tool, ToolCategory } from './types';
 import { performSmartSearch } from './services/geminiService';
+import { useUserData } from './hooks/useUserData';
+import { analyticsService } from './services/analyticsService';
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<ToolCategory | '全部'>('全部');
+  const [selectedCategory, setSelectedCategory] = useState<ToolCategory | '全部' | '收藏' | '最近使用'>('全部');
   const [filteredTools, setFilteredTools] = useState<Tool[]>(TOOLS);
   const [isSearching, setIsSearching] = useState(false);
+
+  // 使用用户数据 Hook
+  const { favorites, recentlyUsed, toggleFavorite, recordUsage, isFavorite } = useUserData();
 
   const { scrollY } = useScroll();
   const headerY = useTransform(scrollY, [0, 500], [0, 120]);
@@ -25,7 +30,17 @@ const App: React.FC = () => {
     setIsSearching(true);
     let results = TOOLS;
 
-    if (selectedCategory !== '全部') {
+    // 处理特殊分类
+    if (selectedCategory === '收藏') {
+      results = results.filter(t => favorites.includes(t.id));
+    } else if (selectedCategory === '最近使用') {
+      const recentIds = recentlyUsed.map(r => r.toolId);
+      results = TOOLS.filter(t => recentIds.includes(t.id));
+      // 按使用时间排序（最近的在前）
+      results.sort((a, b) => {
+        return recentIds.indexOf(a.id) - recentIds.indexOf(b.id);
+      });
+    } else if (selectedCategory !== '全部') {
       results = results.filter(t => t.category === selectedCategory);
     }
 
@@ -34,16 +49,25 @@ const App: React.FC = () => {
       if (smartMatches.length > 0) {
         results = results.filter(t => smartMatches.includes(t.id));
       } else {
-        results = results.filter(t => 
+        results = results.filter(t =>
           t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           t.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
         );
       }
     }
 
+    // 追踪搜索结果
+    analyticsService.trackSearch(searchQuery, results.length);
+
     setFilteredTools(results);
     setIsSearching(false);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, favorites, recentlyUsed]);
+
+  // 处理分类切换
+  const handleCategoryChange = useCallback((category: string) => {
+    setSelectedCategory(category as any);
+    analyticsService.trackCategorySwitch(category);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -65,6 +89,18 @@ const App: React.FC = () => {
     }
   };
 
+  // 处理工具点击
+  const handleToolClick = useCallback((toolId: string) => {
+    recordUsage(toolId);
+  }, [recordUsage]);
+
+  // 获取空状态类型
+  const getEmptyStateType = (): 'search' | 'favorites' | 'recent' => {
+    if (selectedCategory === '收藏') return 'favorites';
+    if (selectedCategory === '最近使用') return 'recent';
+    return 'search';
+  };
+
   const groupedTools = useMemo(() => {
     const groups: Record<string, Tool[]> = {};
     filteredTools.forEach(tool => {
@@ -77,8 +113,12 @@ const App: React.FC = () => {
   }, [filteredTools]);
 
   const displayCategories = useMemo(() => {
-    if (selectedCategory !== '全部') return [selectedCategory];
-    return CATEGORIES.filter(cat => groupedTools[cat] && groupedTools[cat].length > 0);
+    if (selectedCategory === '全部') return CATEGORIES.filter(cat => groupedTools[cat] && groupedTools[cat].length > 0);
+    if (selectedCategory === '收藏' || selectedCategory === '最近使用') {
+      // 特殊分类不显示为分组，直接显示工具列表
+      return [];
+    }
+    return CATEGORIES.includes(selectedCategory as ToolCategory) ? [selectedCategory] : [];
   }, [selectedCategory, groupedTools]);
 
   return (
@@ -161,24 +201,28 @@ const App: React.FC = () => {
           className="flex items-center gap-2 p-1.5 glass rounded-full overflow-hidden max-w-full md:max-w-max"
         >
            <div className="flex gap-1 overflow-x-auto scrollbar-hide px-2">
-            {['全部', ...CATEGORIES].map((cat) => (
+            {['全部', '收藏', '最近使用', ...CATEGORIES].map((cat) => (
               <button
                 key={cat}
-                onClick={() => setSelectedCategory(cat as any)}
+                onClick={() => handleCategoryChange(cat)}
                 className={`px-5 py-2 rounded-full text-[11px] font-bold tracking-wider transition-all whitespace-nowrap relative ${
-                  selectedCategory === cat 
-                  ? 'text-white' 
+                  selectedCategory === cat
+                  ? 'text-white'
                   : 'text-gray-500 hover:text-gray-300'
                 }`}
               >
                 {selectedCategory === cat && (
-                  <motion.div 
+                  <motion.div
                     layoutId="activeCategory"
                     className="absolute inset-0 bg-teal-600 rounded-full -z-10 shadow-lg"
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                   />
                 )}
-                <span className="relative z-10">{cat}</span>
+                <span className="relative z-10 flex items-center gap-2">
+                  {cat === '收藏' && '⭐'}
+                  {cat === '最近使用' && '🕐'}
+                  {cat}
+                </span>
               </button>
             ))}
           </div>
@@ -206,36 +250,66 @@ const App: React.FC = () => {
               exit={{ opacity: 0 }}
               className="space-y-24"
             >
-              {displayCategories.map((category, catIndex) => (
-                <section key={category} className="space-y-10">
-                  <div className="flex items-center gap-6">
-                    <div className="flex flex-col">
-                      <span className="font-mono text-[10px] text-teal-500/60 tracking-[0.4em] uppercase mb-1">
-                        0{catIndex + 1} // Segment
-                      </span>
-                      <h2 className="text-3xl font-bold tracking-tighter text-white/90 uppercase">
-                        {category}
-                      </h2>
-                    </div>
-                    <div className="flex-grow h-[1px] bg-gradient-to-r from-teal-500/20 via-white/5 to-transparent"></div>
-                  </div>
+              {/* 特殊分类（收藏、最近使用）直接显示工具列表 */}
+              {(selectedCategory === '收藏' || selectedCategory === '最近使用') ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                  {filteredTools.map(tool => (
+                    <motion.div
+                      key={tool.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ToolCard
+                        tool={tool}
+                        isFavorite={isFavorite(tool.id)}
+                        onToggleFavorite={toggleFavorite}
+                        onToolClick={handleToolClick}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                /* 常规分类显示为分组 */
+                <>
+                  {displayCategories.map((category, catIndex) => (
+                    <section key={category} className="space-y-10">
+                      <div className="flex items-center gap-6">
+                        <div className="flex flex-col">
+                          <span className="font-mono text-[10px] text-teal-500/60 tracking-[0.4em] uppercase mb-1">
+                            0{catIndex + 1} // Segment
+                          </span>
+                          <h2 className="text-3xl font-bold tracking-tighter text-white/90 uppercase">
+                            {category}
+                          </h2>
+                        </div>
+                        <div className="flex-grow h-[1px] bg-gradient-to-r from-teal-500/20 via-white/5 to-transparent"></div>
+                      </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {groupedTools[category]?.map(tool => (
-                      <motion.div
-                        key={tool.id}
-                        layout
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ToolCard tool={tool} />
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
-              ))}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        {groupedTools[category]?.map(tool => (
+                          <motion.div
+                            key={tool.id}
+                            layout
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <ToolCard
+                              tool={tool}
+                              isFavorite={isFavorite(tool.id)}
+                              onToggleFavorite={toggleFavorite}
+                              onToolClick={handleToolClick}
+                            />
+                          </motion.div>
+                        ))}
+                      </div>
+                    </section>
+                  ))}
+                </>
             </motion.div>
           ) : (
             <motion.div
@@ -244,7 +318,11 @@ const App: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
             >
-              <EmptyState onReset={handleReset} query={searchQuery} />
+              <EmptyState
+                onReset={handleReset}
+                query={searchQuery}
+                type={getEmptyStateType()}
+              />
             </motion.div>
           )}
         </AnimatePresence>
