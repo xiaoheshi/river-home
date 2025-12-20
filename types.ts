@@ -14,7 +14,8 @@ export enum ToolCategory {
   CREATIVE = '创意',
   PRODUCTIVITY = '生产力',
   AI = '人工智能',
-  UTILITIES = '工具'
+  UTILITIES = '工具',
+  PERSONAL = '个人作品'
 }
 
 export interface ChatMessage {
