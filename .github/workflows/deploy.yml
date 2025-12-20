@@ -27,7 +27,7 @@ jobs:
       # 可选：快速确认 secrets 是否注入（防止又遇到空值）
       - name: Check SSH secret exists
         run: |
-          test -n "${{ secrets.SSH_PRIVATE_KEY }}" || (echo "SSH_PRIVATE_KEY is missing" && exit 1)
+          test -n "${{ secrets.DEV }}" || (echo "DEV is missing" && exit 1)
 
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@v5.0.3
