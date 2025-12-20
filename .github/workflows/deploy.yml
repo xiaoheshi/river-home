@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,18 +25,19 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # 可选：快速确认 secrets 是否注入（防止又遇到空值）
+      # 检查 secret 是否注入（DEV 里应存放私钥全文）
       - name: Check SSH secret exists
         run: |
-          test -n "${{ secrets.DEV }}" || (echo "DEV is missing" && exit 1)
+          test -n "${{ secrets.DEV }}" || (echo "DEV secret is missing (SSH private key not injected)" && exit 1)
 
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@v5.0.3
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.DEV }}
-          REMOTE_HOST: 124.222.95.239
-          REMOTE_USER: dev
-          REMOTE_PORT: 22
-          SOURCE: "dist/"
-          TARGET: "/home/dev/river-home/"
-          ARGS: "-avz --delete --exclude=.user.ini --exclude=.htaccess"
+          sshPrivateKey: ${{ secrets.DEV }}
+          remoteHost: 124.222.95.239
+          remoteUser: dev
+          remotePort: 22
+          source: "dist/"
+          target: "/home/dev/river-home/"
+          # 关键：避免 set times/权限导致失败；静态站点不需要保留这些属性
+          args: "-rvz --delete --omit-dir-times --no-times --no-perms --no-owner --no-group --exclude=.user.ini --exclude=.htaccess"

@@ -191,6 +191,15 @@ export const TOOLS: Tool[] = [
     category: ToolCategory.UTILITIES,
     icon: '😺',
     tags: ['趋势', '产品', '社区']
+  },
+  {
+    id: 'ecommica-deals',
+    name: 'Ecommica Deals',
+    description: '海外优惠券聚合平台，汇集全球电商折扣信息，帮你省钱购物。',
+    url: 'https://deals.ecommica.com',
+    category: ToolCategory.UTILITIES,
+    icon: '🎫',
+    tags: ['优惠券', '折扣', '电商']
   }
 ];
 
