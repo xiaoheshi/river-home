@@ -33,11 +33,11 @@ jobs:
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@v5.0.3
         with:
-          sshPrivateKey: ${{ secrets.DEV }}
-          remoteHost: 124.222.95.239
-          remoteUser: dev
-          remotePort: 22
-          source: "dist/"
-          target: "/home/dev/river-home/"
+          SSH_PRIVATE_KEY: ${{ secrets.DEV }}
+          REMOTE_HOST: 124.222.95.239
+          REMOTE_USER: dev
+          REMOTE_PORT: 22
+          SOURCE: "dist/"
+          TARGET: "/home/dev/river-home/"
           # 关键：避免 set times/权限导致失败；静态站点不需要保留这些属性
-          args: "-rvz --delete --omit-dir-times --no-times --no-perms --no-owner --no-group --exclude=.user.ini --exclude=.htaccess"
+          ARGS: "-rvz --delete --omit-dir-times --no-times --no-perms --no-owner --no-group --exclude=.user.ini --exclude=.htaccess"
