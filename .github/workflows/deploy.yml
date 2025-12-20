@@ -32,7 +32,7 @@ jobs:
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@v5.0.3
         with:
-          sshPrivateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          sshPrivateKey: ${{ secrets.DEV }}
           remoteHost: 124.222.95.239
           remoteUser: dev
           remotePort: 22
