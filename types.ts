@@ -22,15 +22,3 @@ export interface ChatMessage {
   content: string;
   timestamp: number;
 }
-
-export interface UserData {
-  favorites: string[];           // 收藏的工具 ID 列表
-  recentlyUsed: RecentUsage[];   // 最近使用记录
-  lastUpdated: number;           // 最后更新时间戳
-}
-
-export interface RecentUsage {
-  toolId: string;
-  timestamp: number;
-  count: number;                 // 点击次数
-}
