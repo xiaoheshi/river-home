@@ -38,4 +38,4 @@ jobs:
           REMOTE_PORT: 22
           SOURCE: "dist/"
           TARGET: "/home/dev/river-home/"
-          ARGS: "-avz --delete"
+          ARGS: "-avz --delete --exclude=.user.ini --exclude=.htaccess"
