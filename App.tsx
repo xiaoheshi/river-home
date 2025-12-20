@@ -273,7 +273,8 @@ const App: React.FC = () => {
                 </div>
               ) : (
                 /* 常规分类显示为分组 */
-                displayCategories.map((category, catIndex) => (
+                <>
+                  {displayCategories.map((category, catIndex) => (
                   <section key={category} className="space-y-10">
                   <div className="flex items-center gap-6">
                     <div className="flex flex-col">
@@ -307,8 +308,8 @@ const App: React.FC = () => {
                     ))}
                   </div>
                 </section>
-              ))}
-              )}
+                  ))}
+                </>
             </motion.div>
           ) : (
             <motion.div
