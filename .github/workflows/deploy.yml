@@ -2,14 +2,12 @@ name: Deploy to Server
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,8 +15,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -26,13 +24,18 @@ jobs:
       - name: Build project
         run: npm run build
 
+      # 可选：快速确认 secrets 是否注入（防止又遇到空值）
+      - name: Check SSH secret exists
+        run: |
+          test -n "${{ secrets.SSH_PRIVATE_KEY }}" || (echo "SSH_PRIVATE_KEY is missing" && exit 1)
+
       - name: Deploy to server
-        uses: easingthemes/ssh-deploy@main
+        uses: easingthemes/ssh-deploy@v5.0.3
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: 115.59.238.167
-          REMOTE_USER: dev
-          REMOTE_PORT: 22
-          SOURCE: dist/
-          TARGET: /home/dev/river-home
-          ARGS: -avz --delete
+          sshPrivateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          remoteHost: 124.222.95.239
+          remoteUser: dev
+          remotePort: 22
+          source: "dist/"
+          target: "/home/dev/river-home/"
+          args: "-avz --delete"
