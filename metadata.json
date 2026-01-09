@@ -1,6 +1,6 @@
 {
-  "name": "River Nexus - 晓河的数字流域",
-  "description": "晓河（River）的个人工具港。一个融合流动美学与智慧检索的数字孪生空间，连接创意与效率。",
+  "name": "River Nexus - Riverhub 的数字流域",
+  "description": "Riverhub 的个人工具港。一个融合流动美学与智慧检索的数字孪生空间，连接创意与效率。",
   "requestFramePermissions": [
     "microphone"
   ]

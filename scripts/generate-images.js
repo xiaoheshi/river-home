@@ -46,7 +46,7 @@ async function generateOgImage() {
             font-size="28"
             font-weight="400"
             fill="#94a3b8"
-            text-anchor="middle">晓河的数字流域</text>
+            text-anchor="middle">Riverhub 的数字流域</text>
     </svg>
   `;
 

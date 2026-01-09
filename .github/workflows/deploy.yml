@@ -40,4 +40,4 @@ jobs:
           SOURCE: "dist/"
           TARGET: "/home/dev/river-home/"
           # 关键：避免 set times/权限导致失败；静态站点不需要保留这些属性
-          ARGS: "-rvz --delete --omit-dir-times --no-times --no-perms --no-owner --no-group --exclude=.user.ini --exclude=.htaccess"
+          ARGS: "-rvz --delete --omit-dir-times --no-times --no-perms --no-owner --no-group --exclude=.user.ini --exclude=.htaccess --exclude=.well-known"

@@ -1,6 +1,90 @@
-
 import React from 'react';
-import { Tool, ToolCategory } from './types';
+import { Tool, ToolCategory, Profile, Project, Skill } from './types';
+
+export const PROFILE: Profile = {
+  name: 'Riverhub',
+  englishName: 'RIVER',
+  tagline: '在三门峡，用代码与设计连接更大的世界',
+  location: '河南三门峡',
+  bio: [
+    '一个来自河南三门峡的全栈开发者。',
+    '在这座五线小城，我用代码构建产品，用设计解决问题，用 AI 探索效率的边界。',
+    '我相信地域不应该成为创造力的限制——互联网让每个角落都能连接世界。'
+  ],
+  identities: [
+    { label: '全栈开发者', icon: '⚡', color: 'teal' },
+    { label: '产品设计者', icon: '💎', color: 'indigo' },
+    { label: 'AI 探索者', icon: '🤖', color: 'purple' },
+    { label: '自媒体新人', icon: '📱', color: 'amber' },
+  ],
+  contact: {
+    email: 'shixiaohe3112@163.com',
+    github: 'xiaoheshi',
+    wechat: '18618387956',
+    socialMedia: []
+  }
+};
+
+export const SKILLS: Skill[] = [
+  {
+    name: '产品设计',
+    level: 90,
+    items: ['Figma', 'UI/UX', '用户研究', '原型设计', '设计系统'],
+    icon: '💎'
+  },
+  {
+    name: '前端开发',
+    level: 88,
+    items: ['Vue', 'React', 'TypeScript', 'uni-app', 'Tailwind', 'Next.js'],
+    icon: '🎨'
+  },
+  {
+    name: '后端开发',
+    level: 82,
+    items: ['Java', 'Spring Boot', 'Node.js', 'Python', 'MySQL', 'API 设计'],
+    icon: '⚙️'
+  },
+  {
+    name: 'AI 应用',
+    level: 75,
+    items: ['Prompt Engineering', 'LLM 集成', 'AI 工作流', '标书方案生成'],
+    icon: '🤖'
+  }
+];
+
+export const PROJECTS: Project[] = [
+  {
+    id: 'ecommica-deals',
+    name: 'Ecommica Deals',
+    description: '海外优惠券聚合平台，汇集全球电商折扣信息，帮你省钱购物。',
+    icon: '🎫',
+    status: 'live',
+    roles: ['独立开发', '产品设计'],
+    techStack: ['Vue', 'Java', '爬虫'],
+    url: 'https://deals.ecommica.com',
+    highlights: ['聚合多平台优惠', '实时更新', '智能推荐']
+  },
+  {
+    id: 'bid-assistant',
+    name: '标书智能助手',
+    description: 'AI驱动的标书撰写工具，从需求分析到方案输出全流程智能化。',
+    icon: '📝',
+    status: 'development',
+    roles: ['产品设计', '全栈开发', 'AI 架构'],
+    techStack: ['React', 'Python', 'LLM API'],
+    highlights: ['需求自动解析', '模板智能匹配', '一键生成方案']
+  },
+  {
+    id: 'novel-writer',
+    name: '小说创作助手',
+    description: '面向网文作者的AI辅助工具，帮助构建世界观、角色和情节。',
+    icon: '✍️',
+    status: 'development',
+    roles: ['产品设计', '全栈开发'],
+    techStack: ['Vue', 'Node.js', 'AI'],
+    highlights: ['大纲生成', '角色设定', '情节推演']
+  }
+];
 
 export const TOOLS: Tool[] = [
   // --- AI 象限 ---

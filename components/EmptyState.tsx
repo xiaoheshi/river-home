@@ -101,7 +101,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onReset, query }) => {
         </div>
         
         <p className="text-slate-400 font-light leading-relaxed text-lg">
-          我们的观测仪已搜索了晓河所有数字支流的尽头。看起来您寻找的信息尚未汇入当前的 Nexus 流域，或者处于下游未同步区域。
+          我们的观测仪已搜索了 Riverhub 所有数字支流的尽头。看起来您寻找的信息尚未汇入当前的 Nexus 流域，或者处于下游未同步区域。
         </p>
       </div>
 
