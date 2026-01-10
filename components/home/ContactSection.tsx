@@ -80,7 +80,7 @@ export const ContactSection: React.FC = () => {
             <div className="relative group-hover:scale-105 transition-transform duration-500">
               <div className="absolute inset-0 bg-green-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
               <img 
-                src="/wechat-qr.png" 
+                src="/wechat-qr.jpg" 
                 alt="WeChat QR Code" 
                 className="relative z-10 w-28 h-28 md:w-32 md:h-32 rounded-xl object-cover bg-white/5 border border-white/10 shadow-2xl"
               />
