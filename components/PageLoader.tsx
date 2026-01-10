@@ -45,7 +45,7 @@ export const PageLoader: React.FC<{ children: React.ReactNode }> = ({ children }
               className="relative"
             >
               <motion.div
-                className="w-24 h-24 rounded-full border-2 border-purple-500/30"
+                className="w-24 h-24 rounded-full border-2 border-teal-500/30"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
               />
@@ -55,7 +55,7 @@ export const PageLoader: React.FC<{ children: React.ReactNode }> = ({ children }
                 transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
               />
               <motion.div
-                className="absolute inset-4 rounded-full border-2 border-indigo-500/30"
+                className="absolute inset-4 rounded-full border-2 border-cyan-500/30"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
               />
@@ -64,7 +64,7 @@ export const PageLoader: React.FC<{ children: React.ReactNode }> = ({ children }
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-teal-400">
+                <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">
                   R
                 </span>
               </motion.div>
@@ -77,7 +77,7 @@ export const PageLoader: React.FC<{ children: React.ReactNode }> = ({ children }
               transition={{ delay: 0.3 }}
             >
               <motion.div
-                className="h-full bg-gradient-to-r from-purple-500 via-teal-400 to-purple-500 rounded-full"
+                className="h-full bg-gradient-to-r from-teal-500 via-cyan-400 to-teal-500 rounded-full"
                 style={{ width: `${progress}%` }}
                 transition={{ duration: 0.1 }}
               />

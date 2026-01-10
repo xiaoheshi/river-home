@@ -5,6 +5,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Background } from './components/Background';
 import { ScrollProgress } from './components/ScrollProgress';
+import { Cursor } from './components/Cursor';
 import { PageLoader } from './components/PageLoader';
 import { Home } from './pages/Home';
 import { Works } from './pages/Works';
@@ -37,6 +38,7 @@ const AnimatedRoutes: React.FC = () => {
 const App: React.FC = () => {
   return (
     <PageLoader>
+      <Cursor />
       <div className="min-h-screen relative">
         <ScrollProgress />
         <div className="aurora" />

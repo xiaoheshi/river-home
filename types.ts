@@ -22,7 +22,7 @@ export enum ToolCategory {
 export interface Identity {
   label: string;
   icon: string;
-  color: 'teal' | 'indigo' | 'purple' | 'amber' | 'rose';
+  color: 'teal' | 'cyan' | 'sky' | 'amber' | 'rose' | 'emerald';
 }
 
 export interface Contact {

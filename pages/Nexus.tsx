@@ -87,14 +87,14 @@ export const Nexus: React.FC = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="flex flex-col items-center text-center mb-16"
+        className="flex flex-col items-center text-center mb-16 relative scan-line"
       >
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-teal-500/20 bg-teal-500/5 backdrop-blur-md text-teal-400 font-mono text-[10px] font-medium tracking-[0.25em] uppercase mb-6">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-teal-500/20 bg-teal-500/5 backdrop-blur-md text-teal-400 font-mono text-[10px] font-medium tracking-[0.25em] uppercase mb-6 shadow-[0_0_10px_rgba(45,212,191,0.2)]">
           <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
           Nexus Tool Hub
         </div>
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-white mb-6">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-200 via-teal-400 to-teal-200">
+        <h1 className="text-5xl md:text-7xl font-display font-extrabold tracking-tighter text-white mb-6">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-200 via-teal-400 to-teal-200 animate-gradient">
             工具港
           </span>
         </h1>
@@ -109,7 +109,7 @@ export const Nexus: React.FC = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="glass w-full max-w-2xl p-1.5 rounded-full shadow-2xl border border-white/10 transition-all focus-within:ring-4 focus-within:ring-teal-500/10 focus-within:border-teal-500/30"
+          className="glass w-full max-w-2xl p-1.5 rounded-full shadow-2xl border border-white/10 transition-all duration-300 focus-within:border-teal-500/40 focus-within:shadow-[0_0_30px_-5px_rgba(45,212,191,0.3)] focus-within:ring-2 focus-within:ring-teal-500/20 relative overflow-hidden"
         >
           <div className="relative flex items-center">
             <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none text-teal-500/50">
@@ -158,7 +158,7 @@ export const Nexus: React.FC = () => {
                 {selectedCategory === cat && (
                   <motion.div 
                     layoutId="activeCategoryNexus"
-                    className="absolute inset-0 bg-teal-600 rounded-full -z-10 shadow-lg"
+                    className="absolute inset-0 bg-gradient-to-r from-teal-600 to-teal-500 rounded-full -z-10 shadow-[0_0_15px_rgba(45,212,191,0.4)]"
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -179,8 +179,8 @@ export const Nexus: React.FC = () => {
               exit={{ opacity: 0 }}
               className="flex flex-col items-center justify-center py-32 space-y-6"
             >
-              <div className="w-12 h-12 border-2 border-teal-500/20 border-t-teal-500 rounded-full animate-spin" />
-              <span className="font-mono text-teal-500/70 text-xs tracking-[0.2em] font-light uppercase animate-pulse">
+              <div className="w-12 h-12 border-2 border-teal-500/20 border-t-teal-400 rounded-full animate-spin shadow-[0_0_20px_rgba(45,212,191,0.3)]" />
+              <span className="font-mono text-teal-500/70 text-xs tracking-[0.2em] font-light uppercase animate-pulse-soft">
                 Searching Nexus...
               </span>
             </motion.div>
@@ -199,11 +199,11 @@ export const Nexus: React.FC = () => {
                       <span className="font-mono text-[10px] text-teal-500/60 tracking-[0.4em] uppercase mb-2 group-hover:text-teal-400 transition-colors">
                         0{catIndex + 1} // Zone
                       </span>
-                      <h2 className="text-2xl md:text-3xl font-bold tracking-tighter text-white/90 uppercase group-hover:text-white transition-colors">
+                      <h2 className="text-2xl md:text-3xl font-display font-bold tracking-tighter text-white/90 uppercase group-hover:text-white transition-colors">
                         {category}
                       </h2>
                     </div>
-                    <div className="flex-grow h-[1px] bg-gradient-to-r from-teal-500/20 via-white/5 to-transparent mb-2"></div>
+                    <div className="flex-grow h-[1px] bg-gradient-to-r from-teal-500/30 via-white/10 to-transparent mb-2 shadow-[0_1px_0_rgba(45,212,191,0.1)]"></div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
@@ -228,9 +228,12 @@ export const Nexus: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="flex justify-center py-20"
+              className="flex justify-center py-12"
             >
-              <EmptyState onReset={handleReset} query={searchQuery} />
+              <div className="glass p-8 md:p-12 rounded-[2rem] border border-white/5 text-center max-w-lg w-full relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-b from-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <EmptyState onReset={handleReset} query={searchQuery} />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

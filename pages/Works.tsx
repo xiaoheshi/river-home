@@ -45,7 +45,7 @@ export const Works: React.FC = () => {
         transition={{ duration: 0.6 }}
         className="mb-12 text-center md:text-left"
       >
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight font-display">
           <span className="text-gradient">作品集</span>
         </h1>
         <p className="text-gray-400 text-lg md:text-xl max-w-2xl leading-relaxed">
@@ -70,7 +70,7 @@ export const Works: React.FC = () => {
             {filter === item && (
               <motion.div
                 layoutId="activeFilter"
-                className="absolute inset-0 bg-white/10 rounded-full backdrop-blur-sm border border-white/10"
+                className="absolute inset-0 bg-gradient-to-r from-teal-500/20 to-cyan-500/20 rounded-full border border-teal-500/30 shadow-[0_0_20px_rgba(45,212,191,0.2)]"
                 transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
               />
             )}
@@ -91,22 +91,22 @@ export const Works: React.FC = () => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
               className="group relative"
             >
-              <div className="glass h-full p-6 md:p-8 rounded-[2rem] border border-white/5 hover:border-white/20 transition-all duration-500 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.1)] overflow-hidden flex flex-col">
+              <div className="card-premium glow-soft h-full p-6 md:p-8 rounded-[2rem] overflow-hidden flex flex-col transition-all duration-500 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]">
                 
                 <div className="flex justify-between items-start mb-6">
                   <div className="text-4xl p-3 bg-white/5 rounded-2xl group-hover:scale-110 transition-transform duration-300">
                     {project.icon}
                   </div>
-                  <span className={`text-xs px-3 py-1 rounded-full border font-medium tracking-wide ${getStatusColor(project.status)}`}>
+                  <span className={`text-sm px-4 py-1.5 rounded-full border font-medium tracking-wide ${getStatusColor(project.status)}`}>
                     {getStatusLabel(project.status)}
                   </span>
                 </div>
 
                 <div className="mb-6 flex-grow">
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-400 transition-all duration-300">
+                  <h3 className="text-2xl font-bold text-white mb-2 font-display group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-400 transition-all duration-300">
                     {project.name}
                   </h3>
                   <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 group-hover:text-gray-300 transition-colors">
@@ -117,7 +117,7 @@ export const Works: React.FC = () => {
                 <div className="space-y-4 mb-8">
                   <div className="flex flex-wrap gap-2">
                     {project.roles.map((role) => (
-                      <span key={role} className="text-[10px] text-indigo-300 bg-indigo-500/10 px-2 py-1 rounded-md">
+                      <span key={role} className="text-[10px] text-teal-300 bg-teal-500/10 px-2 py-1 rounded-md">
                         {role}
                       </span>
                     ))}
@@ -137,7 +137,7 @@ export const Works: React.FC = () => {
                       href={project.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-indigo-300 transition-colors group/link"
+                      className="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-teal-300 transition-colors group/link"
                     >
                       访问项目
                       <svg
@@ -153,7 +153,7 @@ export const Works: React.FC = () => {
                 )}
 
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl rounded-full -mr-16 -mt-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/10 blur-3xl rounded-full -ml-16 -mb-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-teal-500/10 blur-3xl rounded-full -ml-16 -mb-16 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
             </motion.div>
           ))}
@@ -162,12 +162,14 @@ export const Works: React.FC = () => {
 
       {filteredProjects.length === 0 && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center py-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center py-32"
         >
-          <div className="text-6xl mb-4">🌪️</div>
-          <h3 className="text-xl font-medium text-white mb-2">暂无相关项目</h3>
+          <div className="inline-block p-6 rounded-full bg-white/5 mb-6 backdrop-blur-sm border border-white/10">
+            <div className="text-6xl animate-pulse-soft">🌪️</div>
+          </div>
+          <h3 className="text-xl font-medium text-white mb-2 font-display">暂无相关项目</h3>
           <p className="text-gray-500">更多精彩正在酝酿中...</p>
         </motion.div>
       )}

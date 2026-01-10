@@ -13,8 +13,8 @@ export const PROFILE: Profile = {
   ],
   identities: [
     { label: '全栈开发者', icon: '⚡', color: 'teal' },
-    { label: '产品设计者', icon: '💎', color: 'indigo' },
-    { label: 'AI 探索者', icon: '🤖', color: 'purple' },
+    { label: '产品设计者', icon: '💎', color: 'cyan' },
+    { label: 'AI 探索者', icon: '🤖', color: 'sky' },
     { label: '自媒体新人', icon: '📱', color: 'amber' },
   ],
   contact: {

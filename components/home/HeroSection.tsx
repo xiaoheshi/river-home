@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { PROFILE } from '@/constants.tsx';
+import { TextDistortion } from '../TextDistortion';
 
 const SLOGAN = '在小城创造无限可能';
 
@@ -67,7 +68,7 @@ export const HeroSection: React.FC = () => {
       scale: 1,
       y: 0,
       transition: {
-        delay: 2.5 + i * 0.15,
+        delay: 2.8 + i * 0.2,
         duration: 0.8,
         ease: [0.16, 1, 0.3, 1],
       },
@@ -85,9 +86,9 @@ export const HeroSection: React.FC = () => {
           background: useTransform(
             [gradientX, gradientY],
             ([x, y]) => `
-              radial-gradient(ellipse 80% 50% at ${x}% ${y}%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-              radial-gradient(ellipse 60% 40% at ${100 - Number(x)}% ${100 - Number(y)}%, rgba(45, 212, 191, 0.1) 0%, transparent 50%),
-              radial-gradient(ellipse 50% 30% at 50% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 60%)
+              radial-gradient(ellipse 80% 50% at ${x}% ${y}%, rgba(20, 184, 166, 0.12) 0%, transparent 50%),
+              radial-gradient(ellipse 60% 40% at ${100 - Number(x)}% ${100 - Number(y)}%, rgba(56, 189, 248, 0.1) 0%, transparent 50%),
+              radial-gradient(ellipse 50% 30% at 50% 50%, rgba(34, 211, 238, 0.08) 0%, transparent 60%)
             `
           )
         }}
@@ -97,7 +98,7 @@ export const HeroSection: React.FC = () => {
         <motion.div
           className="absolute w-[600px] h-[600px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, transparent 70%)',
             x: useTransform(smoothX, [0, window.innerWidth], [-100, 100]),
             y: useTransform(smoothY, [0, window.innerHeight], [-100, 100]),
             left: '50%',
@@ -126,7 +127,7 @@ export const HeroSection: React.FC = () => {
         {[...Array(3)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-px bg-gradient-to-b from-transparent via-purple-500/50 to-transparent"
+            className="absolute w-px bg-gradient-to-b from-transparent via-teal-500/50 to-transparent"
             style={{
               left: `${20 + i * 30}%`,
               height: '100%',
@@ -147,26 +148,42 @@ export const HeroSection: React.FC = () => {
 
       <div className="relative z-10 flex flex-col items-center text-center max-w-6xl">
         <div className="relative">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight tracking-tight select-none">
-            {displayText.split('').map((char, index) => (
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight tracking-tight select-none font-display">
+            {isTypingComplete ? (
               <motion.span
-                key={index}
-                initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-                className="inline-block text-gradient-premium"
-                style={{ 
-                  textShadow: '0 0 80px rgba(139, 92, 246, 0.3), 0 0 40px rgba(45, 212, 191, 0.2)',
-                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
               >
-                {char}
+                <TextDistortion 
+                  text={SLOGAN} 
+                  className="text-gradient-animated"
+                  mouseX={mouseX}
+                  mouseY={mouseY}
+                />
               </motion.span>
-            ))}
+            ) : (
+              displayText.split('').map((char, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  className="inline-block text-gradient-animated"
+                  style={{ 
+                    textShadow: '0 0 80px rgba(20, 184, 166, 0.3), 0 0 40px rgba(56, 189, 248, 0.2)',
+                  }}
+                >
+                  {char}
+                </motion.span>
+              ))
+            )}
             <motion.span
-              animate={{ opacity: showCursor ? 1 : 0 }}
-              className="inline-block w-[3px] md:w-[4px] h-[1em] bg-gradient-to-b from-purple-400 to-teal-400 ml-1 align-middle"
+              animate={{ opacity: isTypingComplete ? 0 : (showCursor ? 1 : 0) }}
+              transition={{ duration: 0.3 }}
+              className="inline-block w-[3px] md:w-[4px] h-[1em] bg-gradient-to-b from-cyan-400 to-teal-400 ml-1 align-middle"
               style={{ 
-                boxShadow: '0 0 20px rgba(139, 92, 246, 0.8), 0 0 40px rgba(45, 212, 191, 0.6)',
+                boxShadow: '0 0 20px rgba(34, 211, 238, 0.8), 0 0 40px rgba(20, 184, 166, 0.6)',
                 marginBottom: '0.1em'
               }}
             />
@@ -177,13 +194,13 @@ export const HeroSection: React.FC = () => {
               initial={{ scaleX: 0, opacity: 0 }}
               animate={{ scaleX: 1, opacity: 1 }}
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute -bottom-4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"
+              className="absolute -bottom-4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/50 to-transparent"
             />
           )}
         </div>
 
         <motion.div
-          custom={2.2}
+          custom={2.4}
           variants={fadeInVariants}
           initial="hidden"
           animate={isTypingComplete ? "visible" : "hidden"}
@@ -197,7 +214,7 @@ export const HeroSection: React.FC = () => {
             style={{ transformOrigin: 'right' }}
           />
           <span className="tracking-widest text-white/80">{PROFILE.name}</span>
-          <span className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-400 to-teal-400 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-400 to-teal-400 animate-pulse" />
           <span className="tracking-[0.3em] text-white/50 font-light uppercase text-lg">{PROFILE.englishName}</span>
           <motion.span 
             className="w-16 h-px bg-gradient-to-l from-transparent to-white/40"
@@ -217,11 +234,11 @@ export const HeroSection: React.FC = () => {
               initial="hidden"
               animate={isTypingComplete ? "visible" : "hidden"}
               whileHover={{ 
-                scale: 1.05, 
-                y: -4,
-                boxShadow: '0 20px 40px -15px rgba(139, 92, 246, 0.3)'
+                scale: 1.08, 
+                y: -6,
+                boxShadow: '0 25px 50px -12px rgba(20, 184, 166, 0.4)'
               }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm cursor-default transition-colors duration-300 hover:bg-white/10 hover:border-purple-500/30"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm cursor-default transition-colors duration-300 hover:bg-white/10 hover:border-teal-500/30 tag-floating"
             >
               <motion.span 
                 className="text-xl"
@@ -242,7 +259,7 @@ export const HeroSection: React.FC = () => {
         </div>
 
         <motion.p
-          custom={3.2}
+          custom={3.6}
           variants={fadeInVariants}
           initial="hidden"
           animate={isTypingComplete ? "visible" : "hidden"}
@@ -256,7 +273,7 @@ export const HeroSection: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: isTypingComplete ? 1 : 0 }}
         transition={{ delay: 0.5, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-breathe"
       >
         <motion.span 
           className="text-xs uppercase tracking-[0.3em] text-white/30 font-light"
@@ -269,7 +286,7 @@ export const HeroSection: React.FC = () => {
           className="relative w-6 h-10 rounded-full border border-white/20 flex justify-center"
         >
           <motion.div
-            className="w-1 h-2 bg-gradient-to-b from-purple-400 to-teal-400 rounded-full mt-2"
+            className="w-1 h-2 bg-gradient-to-b from-cyan-400 to-teal-400 rounded-full mt-2"
             animate={{ y: [0, 12, 0] }}
             transition={{
               duration: 1.5,
@@ -282,7 +299,7 @@ export const HeroSection: React.FC = () => {
 
       <div className="absolute top-1/4 right-[10%] w-32 h-32 opacity-20 pointer-events-none">
         <motion.div
-          className="w-full h-full border border-purple-500/30 rounded-lg"
+          className="w-full h-full border border-cyan-500/30 rounded-lg"
           animate={{ rotate: 360 }}
           transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
         />

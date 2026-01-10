@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring, useMotionTemplate } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { MagneticButton } from '../MagneticButton';
 import { PROJECTS } from '@/constants.tsx';
 import { Project } from '@/types';
 
@@ -17,6 +18,20 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
   const rotateX = useTransform(mouseY, [-0.5, 0.5], [15, -15]);
   const rotateY = useTransform(mouseX, [-0.5, 0.5], [-15, 15]);
   const brightness = useTransform(mouseY, [-0.5, 0.5], [1.1, 0.9]);
+
+  const gradientAngle = useTransform(
+    [mouseX, mouseY],
+    ([x, y]) => `${Math.atan2(Number(y), Number(x)) * (180 / Math.PI) + 90}deg`
+  );
+
+  const rainbowGradient = useMotionTemplate`linear-gradient(${gradientAngle}, 
+    rgba(255, 0, 0, 0.15) 0%, 
+    rgba(255, 154, 0, 0.15) 20%, 
+    rgba(208, 222, 33, 0.15) 40%, 
+    rgba(79, 220, 74, 0.15) 60%, 
+    rgba(63, 218, 216, 0.15) 80%, 
+    rgba(251, 7, 217, 0.15) 100%
+  )`;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
@@ -54,12 +69,19 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      className="group relative flex flex-col h-full rounded-[2rem] glass p-8 border border-white/10 hover:border-purple-500/30 transition-all duration-500 cursor-pointer"
+      className="group relative flex flex-col h-full rounded-[2rem] glass card-premium glow-border holographic p-8 border border-white/10 hover:border-teal-500/30 hover:shadow-2xl hover:shadow-teal-500/20 transition-all duration-500 cursor-pointer"
     >
+      <motion.div 
+        className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-500 mix-blend-color-dodge"
+        style={{
+          background: rainbowGradient,
+          zIndex: 1
+        }}
+      />
       <motion.div 
         className="absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-500"
         style={{
-          background: 'radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 92, 246, 0.15) 0%, transparent 50%)',
+          background: 'radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(20, 184, 166, 0.15) 0%, transparent 50%)',
           filter: `brightness(${brightness})`,
         }}
       />
@@ -85,7 +107,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
             {String(index + 1).padStart(2, '0')}
           </motion.span>
           <motion.div 
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md border ${
+            className={`px-4 py-2 rounded-full text-sm font-bold backdrop-blur-md border shadow-lg ${
               project.status === 'live' 
                 ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' 
                 : 'bg-amber-500/15 text-amber-400 border-amber-500/30'
@@ -112,14 +134,14 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
         </motion.div>
 
         <h3 
-          className="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-teal-400 transition-all duration-500"
+          className="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:via-teal-400 group-hover:to-sky-400 transition-all duration-500"
           style={{ transform: 'translateZ(35px)' }}
         >
           {project.name}
         </h3>
         
         <motion.div 
-          className="h-0.5 bg-gradient-to-r from-purple-500/50 via-teal-500/50 to-transparent mb-4"
+          className="h-0.5 bg-gradient-to-r from-teal-500/70 via-cyan-500/70 to-transparent mb-4"
           initial={{ width: '3rem' }}
           animate={isHovered ? { width: '100%' } : { width: '3rem' }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -139,7 +161,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
           {project.techStack.map((tech, i) => (
             <motion.span 
               key={tech} 
-              className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 text-gray-300 border border-white/10 hover:border-purple-500/30 hover:bg-purple-500/10 transition-all duration-300"
+              className="px-3 py-1 rounded-lg text-xs font-medium bg-white/5 text-gray-300 border border-white/10 hover:border-teal-500/30 hover:bg-teal-500/10 transition-all duration-300"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5 + i * 0.05 }}
@@ -159,7 +181,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors group/link"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-teal-400 hover:text-teal-300 transition-colors group/link"
               whileHover={{ x: 5 }}
             >
               <span>访问项目</span>
@@ -184,7 +206,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
       </div>
 
       <motion.div
-        className="absolute -bottom-px left-1/2 -translate-x-1/2 w-0 h-[2px] bg-gradient-to-r from-purple-500 via-teal-400 to-purple-500 rounded-full"
+        className="absolute -bottom-px left-1/2 -translate-x-1/2 w-0 h-[2px] bg-gradient-to-r from-teal-500 via-cyan-400 to-teal-500 rounded-full"
         animate={isHovered ? { width: '80%' } : { width: 0 }}
         transition={{ duration: 0.4 }}
       />
@@ -198,7 +220,7 @@ export const ProjectShowcase: React.FC = () => {
   return (
     <section className="py-32 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-purple-600/5 rounded-full blur-[100px]" />
+        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-teal-600/5 rounded-full blur-[100px]" />
         <div className="absolute bottom-1/4 right-0 w-[400px] h-[400px] bg-teal-600/5 rounded-full blur-[80px]" />
       </div>
       
@@ -217,12 +239,12 @@ export const ProjectShowcase: React.FC = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <span className="h-px w-12 bg-gradient-to-r from-transparent to-purple-500/50" />
-            <span className="text-purple-400 text-sm font-semibold tracking-[0.2em] uppercase">Portfolio</span>
-            <span className="h-px w-12 bg-gradient-to-l from-transparent to-purple-500/50" />
+            <span className="h-px w-12 bg-gradient-to-r from-transparent to-teal-500/50" />
+            <span className="text-teal-400 text-sm font-semibold tracking-[0.2em] uppercase">Portfolio</span>
+            <span className="h-px w-12 bg-gradient-to-l from-transparent to-teal-500/50" />
           </motion.div>
-          <h2 className="text-4xl md:text-6xl font-bold text-center text-white mb-6">
-            我创造的<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-teal-400 to-purple-400">产品</span>
+          <h2 className="text-4xl md:text-6xl font-bold font-display text-center text-white mb-6">
+            我创造的<span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-sky-400">产品</span>
           </h2>
           <p className="text-gray-400 text-center max-w-2xl text-lg leading-relaxed">
             不仅仅是代码，更是对用户体验的深度思考与打磨
@@ -244,22 +266,24 @@ export const ProjectShowcase: React.FC = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <Link 
-            to="/works" 
-            className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-purple-500/40 text-white font-medium transition-all duration-500 hover:scale-105 overflow-hidden"
-          >
-            <span className="relative z-10">查看全部作品</span>
-            <motion.svg 
-              className="w-5 h-5 text-purple-400 relative z-10" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-              whileHover={{ x: 5 }}
+          <MagneticButton className="inline-block" strength={0.4}>
+            <Link 
+              to="/works" 
+              className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-teal-500/40 hover:shadow-[0_0_25px_rgba(20,184,166,0.4)] text-white font-medium transition-all duration-500 hover:scale-105 overflow-hidden"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </motion.svg>
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/10 to-purple-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-          </Link>
+              <span className="relative z-10">查看全部作品</span>
+              <motion.svg 
+                className="w-5 h-5 text-teal-400 relative z-10" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+                whileHover={{ x: 5 }}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </motion.svg>
+              <div className="absolute inset-0 bg-gradient-to-r from-teal-600/0 via-teal-600/10 to-teal-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+            </Link>
+          </MagneticButton>
         </motion.div>
       </div>
     </section>

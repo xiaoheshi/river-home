@@ -35,8 +35,8 @@ export const ToolPreview: React.FC = () => {
           <span className="text-teal-400 text-sm font-semibold tracking-[0.2em] uppercase">Tools</span>
           <span className="h-px w-12 bg-gradient-to-l from-transparent to-teal-500/50" />
         </motion.div>
-        <h2 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
-          我的<span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-purple-400">工具流域</span>
+        <h2 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight font-display">
+          我的<span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-400">工具流域</span>
         </h2>
         <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light leading-relaxed">
           这些是我日常使用的工具，也是我对数字效率的理解与实践
@@ -51,7 +51,7 @@ export const ToolPreview: React.FC = () => {
         {orbitRadius.map((radius, orbitIndex) => (
           <motion.div
             key={orbitIndex}
-            className="absolute rounded-full border border-white/5"
+            className="absolute rounded-full border border-white/10 shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]"
             style={{ width: radius * 2, height: radius * 2 }}
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -61,21 +61,21 @@ export const ToolPreview: React.FC = () => {
         ))}
 
         <motion.div
-          className="absolute w-20 h-20 rounded-full bg-gradient-to-br from-purple-500/20 to-teal-500/20 backdrop-blur-md border border-white/10 flex items-center justify-center z-20"
+          className="absolute w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500/20 to-teal-500/20 backdrop-blur-md border border-white/20 flex items-center justify-center z-20 shadow-[0_0_30px_rgba(94,234,212,0.2)]"
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
           transition={{ type: 'spring', stiffness: 200, damping: 20 }}
           whileHover={{ scale: 1.1 }}
         >
-          <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-teal-400">R</span>
+          <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">R</span>
           <motion.div
             className="absolute inset-0 rounded-full"
             animate={{ 
               boxShadow: [
-                '0 0 20px rgba(139, 92, 246, 0.3)',
-                '0 0 40px rgba(45, 212, 191, 0.3)',
-                '0 0 20px rgba(139, 92, 246, 0.3)'
+                '0 0 20px rgba(20, 184, 166, 0.3)',
+                '0 0 40px rgba(56, 189, 248, 0.3)',
+                '0 0 20px rgba(20, 184, 166, 0.3)'
               ]
             }}
             transition={{ duration: 3, repeat: Infinity }}
@@ -119,9 +119,9 @@ export const ToolPreview: React.FC = () => {
                   y: Math.sin((baseAngle + (isHovered ? 0 : 360)) * Math.PI / 180) * radius - 30,
                 }}
                 transition={{
-                  duration: orbitSpeed,
-                  repeat: Infinity,
-                  ease: 'linear',
+                  duration: isHovered ? 0.8 : orbitSpeed,
+                  repeat: isHovered ? 0 : Infinity,
+                  ease: isHovered ? "easeOut" : "linear",
                 }}
                 initial={{
                   x: Math.cos(baseAngle * Math.PI / 180) * radius - 30,
@@ -131,15 +131,20 @@ export const ToolPreview: React.FC = () => {
                 <motion.div
                   className="group relative w-14 h-14 md:w-16 md:h-16 rounded-2xl glass border border-white/10 shadow-lg backdrop-blur-md flex items-center justify-center text-2xl md:text-3xl bg-white/5 cursor-default select-none"
                   whileHover={{ 
-                    scale: 1.2, 
+                    scale: 1.35, 
                     zIndex: 50,
-                    boxShadow: '0 20px 40px -10px rgba(139, 92, 246, 0.4)'
+                    boxShadow: '0 0 30px rgba(45, 212, 191, 0.5), 0 0 10px rgba(56, 189, 248, 0.3)',
+                    borderColor: 'rgba(45, 212, 191, 0.4)'
                   }}
                   animate={{
                     rotate: isHovered ? 0 : -direction * 360,
                   }}
                   transition={{
-                    rotate: { duration: orbitSpeed, repeat: Infinity, ease: 'linear' },
+                    rotate: { 
+                      duration: isHovered ? 0.8 : orbitSpeed, 
+                      repeat: isHovered ? 0 : Infinity, 
+                      ease: isHovered ? "easeOut" : "linear" 
+                    },
                     scale: { duration: 0.2 },
                   }}
                 >
@@ -174,8 +179,9 @@ export const ToolPreview: React.FC = () => {
                 className="w-14 h-14 md:w-16 md:h-16 rounded-2xl glass border border-white/10 shadow-lg backdrop-blur-md flex items-center justify-center text-base md:text-lg font-bold text-white/80 bg-white/5 cursor-pointer"
                 whileHover={{ 
                   scale: 1.2, 
-                  backgroundColor: 'rgba(139, 92, 246, 0.2)',
-                  borderColor: 'rgba(139, 92, 246, 0.4)'
+                  backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                  borderColor: 'rgba(20, 184, 166, 0.4)',
+                  boxShadow: '0 0 20px rgba(20, 184, 166, 0.3)'
                 }}
               >
                 +{remainingCount}
@@ -194,7 +200,7 @@ export const ToolPreview: React.FC = () => {
       >
         <Link 
           to="/nexus"
-          className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-teal-500/40 text-white font-medium transition-all duration-500 hover:scale-105 overflow-hidden"
+          className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-teal-500/40 text-white font-medium transition-all duration-500 hover:scale-105 overflow-hidden shadow-[0_0_20px_rgba(45,212,191,0.1)] hover:shadow-[0_0_30px_rgba(45,212,191,0.3)]"
         >
           <span className="relative z-10">探索工具港</span>
           <motion.span 

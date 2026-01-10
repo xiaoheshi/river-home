@@ -30,7 +30,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool }) => {
       </div>
 
       <div className="relative z-10 flex-grow">
-        <h3 className="text-2xl font-bold mb-4 tracking-tighter-heading group-hover:text-white transition-colors">
+        <h3 className="text-2xl font-bold mb-4 tracking-tighter-heading group-hover:text-white transition-colors font-display">
           {tool.name}
         </h3>
         

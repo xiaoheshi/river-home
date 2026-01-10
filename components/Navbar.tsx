@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { MagneticButton } from './MagneticButton';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,24 +37,25 @@ export const Navbar: React.FC = () => {
             className="group relative z-50"
             aria-label="Home"
           >
-            <span className="text-2xl font-bold tracking-tighter text-gradient font-sans">
+            <span className="text-2xl font-bold tracking-tighter text-gradient font-display">
               Riverhub
             </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-12">
             {links.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`nav-link text-[15px] font-medium tracking-wide transition-colors duration-300 ${
-                  location.pathname === link.path 
-                    ? 'text-white' 
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {link.name}
-              </Link>
+              <MagneticButton key={link.path} className="relative">
+                <Link
+                  to={link.path}
+                  className={`nav-link text-[15px] font-medium tracking-wide transition-colors duration-300 ${
+                    location.pathname === link.path 
+                      ? 'text-white' 
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              </MagneticButton>
             ))}
           </div>
 
