@@ -35,9 +35,8 @@ jobs:
         with:
           SSH_PRIVATE_KEY: ${{ secrets.DEV }}
           REMOTE_HOST: 124.222.95.239
-          REMOTE_USER: dev
+          REMOTE_USER: root
           REMOTE_PORT: 22
           SOURCE: "dist/"
-          TARGET: "/home/dev/river-home/"
-          # 关键：避免 set times/权限导致失败；静态站点不需要保留这些属性
-          ARGS: "-rvz --delete --omit-dir-times --no-times --no-perms --no-owner --no-group --exclude=.user.ini --exclude=.htaccess --exclude=.well-known"
+          TARGET: "/home/river-home/"
+          ARGS: "-rvz --delete --omit-dir-times --no-times --no-perms --no-owner --no-group --exclude=.well-known"
