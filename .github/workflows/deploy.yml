@@ -25,18 +25,17 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # 检查 secret 是否注入（DEV 里应存放私钥全文）
       - name: Check SSH secret exists
         run: |
-          test -n "${{ secrets.DEV }}" || (echo "DEV secret is missing (SSH private key not injected)" && exit 1)
+          test -n "${{ secrets.SSH_PRIVATE_KEY }}" || (echo "SSH_PRIVATE_KEY secret is missing" && exit 1)
 
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@v5.0.3
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.DEV }}
-          REMOTE_HOST: 124.222.95.239
-          REMOTE_USER: root
-          REMOTE_PORT: 22
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
           SOURCE: "dist/"
           TARGET: "/home/river-home/"
           ARGS: "-rvz --delete --omit-dir-times --no-times --no-perms --no-owner --no-group --exclude=.well-known"
