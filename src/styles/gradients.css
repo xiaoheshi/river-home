@@ -1,0 +1,17 @@
+@layer utilities {
+  .text-gradient-primary {
+    @apply bg-gradient-primary bg-clip-text text-transparent;
+  }
+
+  .border-gradient-primary {
+    border-image: linear-gradient(135deg, #8B5CF6, #3B82F6, #06B6D4) 1;
+  }
+
+  .bg-glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20;
+  }
+
+  .bg-glass-dark {
+    @apply bg-slate-900/70 backdrop-blur-md border border-slate-700/50;
+  }
+}
