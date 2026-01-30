@@ -19,7 +19,7 @@ export const PROFILE: Profile = {
   ],
   contact: {
     email: 'shixiaohe3112@163.com',
-    github: 'xiaoheshi',
+    github: 'https://github.com/xiaoheshi',
     wechat: '18618387956',
     socialMedia: []
   }
