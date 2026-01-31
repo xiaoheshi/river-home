@@ -1,0 +1,1 @@
+export { useMouseParallax } from './useMouseParallax';

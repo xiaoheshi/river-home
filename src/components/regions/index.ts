@@ -1,0 +1,1 @@
+export { HomeRegion } from './HomeRegion';
