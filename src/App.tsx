@@ -9,8 +9,11 @@ import {
   Particles,
   Connections,
   Effects,
+  Portals,
 } from './components/canvas';
 import { HomeRegion, WorksRegion, NexusRegion, AboutRegion } from './components/regions';
+import { Navbar } from './components/ui/Navbar';
+import { MobileNav } from './components/ui/MobileNav';
 import { useNavigationStore, Region } from './stores/navigationStore';
 
 function NavigationSync() {
@@ -35,6 +38,8 @@ function App() {
   return (
     <>
       <NavigationSync />
+      <Navbar />
+      <MobileNav />
 
       {/* 3D 场景 */}
       <Scene>
@@ -48,6 +53,7 @@ function App() {
         <WorksRegion />
         <NexusRegion />
         <AboutRegion />
+        <Portals />
       </Scene>
 
       {/* 路由占位（后续添加实际内容） */}

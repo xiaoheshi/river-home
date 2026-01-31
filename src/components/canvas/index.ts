@@ -5,3 +5,4 @@ export { Geometries, FloatingGeometry } from './Geometries';
 export { Particles } from './Particles';
 export { Connections } from './Connections';
 export { Effects } from './Effects';
+export { Portals } from './Portals';
