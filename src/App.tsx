@@ -14,7 +14,9 @@ import {
 import { HomeRegion, WorksRegion, NexusRegion, AboutRegion } from './components/regions';
 import { Navbar } from './components/ui/Navbar';
 import { MobileNav } from './components/ui/MobileNav';
+import { FallbackPage } from './components/ui/FallbackPage';
 import { useNavigationStore, Region } from './stores/navigationStore';
+import { useDevicePerformance } from './hooks';
 
 function NavigationSync() {
   const location = useLocation();
@@ -35,6 +37,12 @@ function NavigationSync() {
 }
 
 function App() {
+  const performance = useDevicePerformance();
+
+  if (!performance.supportsWebGL) {
+    return <FallbackPage />;
+  }
+
   return (
     <>
       <NavigationSync />
@@ -46,7 +54,7 @@ function App() {
         <Environment />
         <CameraController />
         <Geometries />
-        <Particles />
+        <Particles performanceTier={performance.tier} />
         <Connections />
         <Effects />
         <HomeRegion />
