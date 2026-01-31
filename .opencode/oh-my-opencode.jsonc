@@ -17,16 +17,16 @@
   },
   "agents": {
     "sisyphus": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "high"
+      "model": "google/antigravity-claude-opus-4-5-thinking",
+      "variant": "max"
     },
     "sisyphus-junior": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "high"
+      "model": "google/antigravity-claude-opus-4-5-thinking",
+      "variant": "max"
     },
     "oracle": {
       "model": "cpa-openai/gpt-5.2-codex",
-      "variant": "high"
+      "variant": "xhigh"
     },
     "librarian": {
       "model": "google/antigravity-gemini-3-flash"
@@ -38,19 +38,19 @@
       "model": "google/antigravity-gemini-3-flash"
     },
     "prometheus": {
-      "model": "google/antigravity-gemini-3-pro",
+      "model": "google/antigravity-claude-opus-4-5-thinking",
       "variant": "max"
     },
     "metis": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "max"
+      "model": "cpa-openai/gpt-5.2-codex",
+      "variant": "xhigh"
     },
     "momus": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "max"
+      "model": "cpa-openai/gpt-5.2-codex",
+      "variant": "xhigh"
     },
     "atlas": {
-      "model": "google/antigravity-gemini-3-pro",
+      "model": "google/antigravity-claude-opus-4-5-thinking",
       "variant": "high"
     }
   },
@@ -61,7 +61,7 @@
     },
     "ultrabrain": {
       "model": "cpa-openai/gpt-5.2-codex",
-      "variant": "max"
+      "variant": "xhigh"
     },
     "artistry": {
       "model": "google/antigravity-gemini-3-pro",
@@ -71,15 +71,15 @@
       "model": "google/antigravity-gemini-3-flash"
     },
     "unspecified-low": {
-      "model": "google/antigravity-gemini-3-pro",
-      "variant": "high"
+      "model": "google/antigravity-claude-opus-4-5-thinking",
+      "variant": "low"
     },
     "unspecified-high": {
-      "model": "google/antigravity-gemini-3-pro",
+      "model": "google/antigravity-claude-opus-4-5-thinking",
       "variant": "max"
     },
     "writing": {
-      "model": "google/antigravity-gemini-3-pro",
+      "model": "cpa-claude/claude-sonnet-4-5-thinking",
       "variant": "high"
     }
   },
