@@ -10,7 +10,7 @@ import {
   Connections,
   Effects,
 } from './components/canvas';
-import { HomeRegion } from './components/regions';
+import { HomeRegion, WorksRegion, NexusRegion, AboutRegion } from './components/regions';
 import { useNavigationStore, Region } from './stores/navigationStore';
 
 function NavigationSync() {
@@ -45,6 +45,9 @@ function App() {
         <Connections />
         <Effects />
         <HomeRegion />
+        <WorksRegion />
+        <NexusRegion />
+        <AboutRegion />
       </Scene>
 
       {/* 路由占位（后续添加实际内容） */}
