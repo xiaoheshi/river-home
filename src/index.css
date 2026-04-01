@@ -92,7 +92,7 @@ h1, h2, h3, h4, h5, h6 {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 100;
   pointer-events: none;
   opacity: 0.025;
   mix-blend-mode: multiply;
@@ -127,6 +127,22 @@ h1, h2, h3, h4, h5, h6 {
   transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
-.link-underline:hover::after {
+.link-underline:hover::after,
+.link-underline.active::after {
   width: 100%;
+}
+
+/* ─── Focus Ring ─── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

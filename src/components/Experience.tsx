@@ -20,13 +20,13 @@ function TimelineEntry({ exp, index }: { exp: typeof experiences[0]; index: numb
       ref={ref}
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
-      variants={slideIn(0.1)}
+      variants={slideIn(0.1 + index * 0.08)}
       className="group grid grid-cols-1 md:grid-cols-[200px_1fr] gap-2 md:gap-10"
     >
       {/* Left — time & role */}
       <div className="md:text-right md:pt-0.5">
         <span
-          className="text-xs text-slate-400 dark:text-slate-600 tabular-nums"
+          className="text-xs text-slate-400 dark:text-slate-500 tabular-nums"
           style={{ fontFamily: 'var(--font-mono)' }}
         >
           {exp.period}
@@ -39,13 +39,21 @@ function TimelineEntry({ exp, index }: { exp: typeof experiences[0]; index: numb
       {/* Right — content */}
       <div className="relative pl-6 md:pl-8 pb-12 border-l border-slate-200 dark:border-slate-800 group-last:pb-0">
         {/* Dot on the line */}
-        <div className="absolute left-0 top-1 -translate-x-1/2 w-2 h-2 rounded-full bg-blue-500 ring-[3px] ring-slate-50 dark:ring-[#0b0b14]" />
+        <div className={`absolute left-0 top-1 -translate-x-1/2 rounded-full bg-blue-500 ${index === 0 ? 'w-2.5 h-2.5 ring-[3px] ring-blue-500/20' : 'w-2 h-2 ring-[3px] ring-slate-50 dark:ring-[#0b0b14]'}`} />
 
         <h3
           className="text-base font-semibold text-slate-900 dark:text-white -mt-0.5"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           {exp.company}
+          {index === 0 && (
+            <span
+              className="inline md:hidden ml-2 px-1.5 py-0.5 text-[9px] bg-blue-50 dark:bg-blue-500/10 text-blue-500 dark:text-blue-400 rounded font-medium align-middle"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              CURRENT
+            </span>
+          )}
         </h3>
         <p className="mt-0.5 text-sm text-blue-500 dark:text-blue-400 md:hidden">
           {exp.role}
@@ -61,7 +69,7 @@ function TimelineEntry({ exp, index }: { exp: typeof experiences[0]; index: numb
 
         {/* Index marker */}
         {index === 0 && (
-          <span className="absolute -left-[52px] md:-left-[52px] top-0 text-[10px] text-slate-300 dark:text-slate-700 hidden md:block" style={{ fontFamily: 'var(--font-mono)' }}>
+          <span className="absolute -left-[52px] md:-left-[52px] top-0 text-[10px] text-slate-300 dark:text-slate-600 hidden md:block" style={{ fontFamily: 'var(--font-mono)' }}>
             now
           </span>
         )}
@@ -90,7 +98,7 @@ export default function Experience() {
           >
             工作经历
           </motion.h2>
-          <motion.p variants={slideIn(0.2)} className="mt-3 text-sm text-slate-500 dark:text-slate-500 max-w-lg">
+          <motion.p variants={slideIn(0.2)} className="mt-3 text-sm text-slate-500 dark:text-slate-400 max-w-lg">
             从北京到上海再到河南，13 年间经历了金融支付与智慧城市两大领域的深度历练。
           </motion.p>
         </motion.div>

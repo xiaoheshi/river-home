@@ -1,6 +1,27 @@
-import { motion } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
 import { ArrowDown, Github } from 'lucide-react'
 import { profile } from '@/data/resume'
+
+function CountUp({ target, duration = 1.5 }: { target: number; duration?: number }) {
+  const [value, setValue] = useState(0)
+  const ref = useRef<HTMLSpanElement>(null)
+  const inView = useInView(ref, { once: true })
+
+  useEffect(() => {
+    if (!inView) return
+    const start = performance.now()
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / (duration * 1000), 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setValue(Math.round(eased * target))
+      if (progress < 1) requestAnimationFrame(step)
+    }
+    requestAnimationFrame(step)
+  }, [inView, target, duration])
+
+  return <span ref={ref}>{value}</span>
+}
 
 export default function Hero() {
   return (
@@ -8,22 +29,28 @@ export default function Hero() {
       {/* Background — animated mesh gradient */}
       <div className="absolute inset-0 overflow-hidden">
         <div
-          className="absolute w-[600px] h-[600px] -top-40 -right-40 rounded-full opacity-20 dark:opacity-10 blur-[100px]"
+          className="absolute w-[600px] h-[600px] -top-40 -right-40 rounded-full opacity-30 dark:opacity-15 blur-[80px]"
           style={{ background: 'radial-gradient(circle, #3b82f6 0%, transparent 70%)', animation: 'mesh-drift 20s ease-in-out infinite' }}
         />
         <div
-          className="absolute w-[500px] h-[500px] -bottom-20 -left-20 rounded-full opacity-15 dark:opacity-8 blur-[80px]"
+          className="absolute w-[500px] h-[500px] -bottom-20 -left-20 rounded-full opacity-25 dark:opacity-12 blur-[80px]"
           style={{ background: 'radial-gradient(circle, #06b6d4 0%, transparent 70%)', animation: 'mesh-drift 25s ease-in-out infinite reverse' }}
         />
         {/* Blueprint grid */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.03] dark:opacity-[0.05]" xmlns="http://www.w3.org/2000/svg">
+        <svg className="absolute inset-0 w-full h-full opacity-[0.06] dark:opacity-[0.08]" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#3b82f6" strokeWidth="0.5" />
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#3b82f6" strokeWidth="0.6" />
+            </pattern>
+            <pattern id="grid-fine" width="12" height="12" patternUnits="userSpaceOnUse">
+              <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#3b82f6" strokeWidth="0.3" />
             </pattern>
           </defs>
+          <rect width="100%" height="100%" fill="url(#grid-fine)" />
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
+        {/* Depth gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-blue-50/40 dark:to-blue-950/20 pointer-events-none" />
       </div>
 
       {/* Giant Watermark "河" */}
@@ -34,7 +61,8 @@ export default function Hero() {
         className="absolute right-[5%] sm:right-[10%] top-1/2 -translate-y-1/2 select-none pointer-events-none"
       >
         <span
-          className="text-[20rem] sm:text-[28rem] md:text-[36rem] font-black leading-none text-slate-900/[0.03] dark:text-white/[0.03]"
+          aria-hidden="true"
+          className="text-[20rem] sm:text-[28rem] md:text-[36rem] font-black leading-none text-slate-900/[0.05] dark:text-white/[0.05]"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           河
@@ -74,7 +102,7 @@ export default function Hero() {
           >
             <div className="flex items-center gap-4">
               <span
-                className="text-xs tracking-[0.3em] uppercase text-slate-400 dark:text-slate-600 shrink-0"
+                className="text-xs tracking-[0.3em] uppercase text-slate-400 dark:text-slate-500 shrink-0"
                 style={{ fontFamily: 'var(--font-mono)' }}
               >
                 {profile.nameEn}
@@ -113,7 +141,7 @@ export default function Hero() {
           >
             <a
               href="#projects"
-              className="group inline-flex items-center gap-2.5 px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-[0_8px_30px_-6px_rgba(15,23,42,0.25)] dark:hover:shadow-[0_8px_30px_-6px_rgba(255,255,255,0.15)]"
+              className="group inline-flex items-center gap-2.5 px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-[0_8px_30px_-6px_rgba(15,23,42,0.25)] dark:hover:shadow-[0_8px_30px_-6px_rgba(255,255,255,0.15)] active:scale-[0.97] active:shadow-none"
               style={{ fontFamily: 'var(--font-display)' }}
             >
               查看项目
@@ -136,12 +164,12 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.6 }}
-            className="mt-16 flex items-center gap-8"
+            className="mt-16 flex items-center gap-4 sm:gap-8"
           >
             {[
-              { value: '13', unit: '年', label: '研发经验' },
-              { value: '10', unit: '+', label: '交付项目' },
-              { value: '100', unit: '万+', label: '日均交易' },
+              { value: 13, unit: '年', label: '研发经验' },
+              { value: 10, unit: '+', label: '交付项目' },
+              { value: 100, unit: '万+', label: '日均交易' },
             ].map((stat, i) => (
               <div key={stat.label} className="flex items-baseline gap-3">
                 {i > 0 && <div className="w-px h-8 bg-slate-200 dark:bg-slate-800 -ml-4 mr-0" />}
@@ -150,10 +178,10 @@ export default function Hero() {
                     className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tabular-nums"
                     style={{ fontFamily: 'var(--font-mono)' }}
                   >
-                    {stat.value}
+                    <CountUp target={stat.value} />
                   </span>
                   <span className="text-sm text-blue-500 ml-0.5">{stat.unit}</span>
-                  <p className="text-[11px] text-slate-400 dark:text-slate-600 mt-0.5">{stat.label}</p>
+                  <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">{stat.label}</p>
                 </div>
               </div>
             ))}
@@ -168,13 +196,13 @@ export default function Hero() {
         transition={{ delay: 2.5, duration: 1 }}
         className="absolute bottom-6 left-6 sm:left-auto sm:right-6 flex items-center gap-3"
       >
-        <span className="text-[10px] tracking-[0.15em] uppercase text-slate-400 dark:text-slate-600" style={{ fontFamily: 'var(--font-mono)' }}>
+        <span className="text-[10px] tracking-[0.15em] uppercase text-slate-400 dark:text-slate-500" style={{ fontFamily: 'var(--font-mono)' }}>
           Scroll
         </span>
         <motion.div
           animate={{ scaleY: [1, 0.3, 1] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-px h-6 bg-slate-400 dark:bg-slate-600 origin-top"
+          className="w-px h-6 bg-slate-400 dark:bg-slate-500 origin-top"
         />
       </motion.div>
     </section>

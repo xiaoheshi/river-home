@@ -1,6 +1,6 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Github, Phone, MapPin, ArrowUpRight } from 'lucide-react'
+import { Github, Phone, Mail, MapPin, ArrowUpRight } from 'lucide-react'
 import { profile } from '@/data/resume'
 
 const slideIn = (delay: number = 0) => ({
@@ -40,7 +40,7 @@ export default function Contact() {
             </motion.h2>
             <motion.p
               variants={slideIn(0.25)}
-              className="mt-6 text-base text-slate-500 dark:text-slate-500 leading-relaxed max-w-md"
+              className="mt-6 text-base text-slate-500 dark:text-slate-400 leading-relaxed max-w-md"
             >
               无论是技术合作、项目咨询还是职业机会，期待与你交流。
             </motion.p>
@@ -62,11 +62,31 @@ export default function Contact() {
                 <Phone size={18} />
               </div>
               <div className="flex-1">
-                <span className="text-[11px] text-slate-400 dark:text-slate-600 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                <span className="text-[11px] text-slate-400 dark:text-slate-500 block" style={{ fontFamily: 'var(--font-mono)' }}>
                   电话
                 </span>
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300 mt-0.5 block" style={{ fontFamily: 'var(--font-mono)' }}>
                   {profile.phone}
+                </span>
+              </div>
+              <ArrowUpRight size={16} className="text-slate-300 dark:text-slate-700 group-hover:text-blue-500 transition-colors" />
+            </motion.a>
+
+            {/* Email */}
+            <motion.a
+              variants={slideIn(0.34)}
+              href={`mailto:${profile.email}`}
+              className="group flex items-center gap-5 p-5 rounded-xl bg-white dark:bg-white/[0.02] border border-slate-200/80 dark:border-slate-800/60 hover:border-blue-200 dark:hover:border-blue-900/50 transition-all duration-300"
+            >
+              <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400 shrink-0">
+                <Mail size={18} />
+              </div>
+              <div className="flex-1">
+                <span className="text-[11px] text-slate-400 dark:text-slate-500 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                  邮箱
+                </span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300 mt-0.5 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                  {profile.email}
                 </span>
               </div>
               <ArrowUpRight size={16} className="text-slate-300 dark:text-slate-700 group-hover:text-blue-500 transition-colors" />
@@ -84,7 +104,7 @@ export default function Contact() {
                 <Github size={18} />
               </div>
               <div className="flex-1">
-                <span className="text-[11px] text-slate-400 dark:text-slate-600 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                <span className="text-[11px] text-slate-400 dark:text-slate-500 block" style={{ fontFamily: 'var(--font-mono)' }}>
                   GitHub
                 </span>
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300 mt-0.5 block" style={{ fontFamily: 'var(--font-mono)' }}>
@@ -95,22 +115,26 @@ export default function Contact() {
             </motion.a>
 
             {/* Location */}
-            <motion.div
+            <motion.a
               variants={slideIn(0.46)}
-              className="flex items-center gap-5 p-5 rounded-xl bg-white dark:bg-white/[0.02] border border-slate-200/80 dark:border-slate-800/60"
+              href={`https://maps.apple.com/?q=${profile.location}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-5 p-5 rounded-xl bg-white dark:bg-white/[0.02] border border-slate-200/80 dark:border-slate-800/60 hover:border-blue-200 dark:hover:border-blue-900/50 transition-all duration-300"
             >
               <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 dark:text-blue-400 shrink-0">
                 <MapPin size={18} />
               </div>
               <div className="flex-1">
-                <span className="text-[11px] text-slate-400 dark:text-slate-600 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                <span className="text-[11px] text-slate-400 dark:text-slate-500 block" style={{ fontFamily: 'var(--font-mono)' }}>
                   位置
                 </span>
                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300 mt-0.5 block">
                   {profile.location}，中国
                 </span>
               </div>
-            </motion.div>
+              <ArrowUpRight size={16} className="text-slate-300 dark:text-slate-700 group-hover:text-blue-500 transition-colors" />
+            </motion.a>
           </motion.div>
         </div>
       </div>

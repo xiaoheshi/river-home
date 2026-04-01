@@ -14,6 +14,7 @@ export const profile = {
   tagline: '13 年全栈经验，用 AI 重新定义研发效率',
   bio: '深耕金融支付与智慧城市双领域，精通 Java 后端与 Vue3 前端全栈开发。率先将 AI 编程引入工程实践，具备从技术选型到系统交付的完整闭环能力，兼具售前标书撰写与团队管理经验。',
   github: 'https://github.com/xiaoheshi',
+  email: 'shixiaohe@outlook.com',
   phone: '18618387956',
   location: '西安',
   experience: '13 年',

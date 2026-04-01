@@ -54,7 +54,7 @@ export default function About() {
             </motion.p>
 
             {/* Competency grid */}
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-200/80 dark:bg-slate-800/60 rounded-xl overflow-hidden">
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {competencies.map((item, i) => {
                 const Icon = item.icon
                 return (
@@ -63,8 +63,9 @@ export default function About() {
                     initial="hidden"
                     animate={inView ? 'visible' : 'hidden'}
                     variants={scaleIn(0.3 + i * 0.08)}
-                    className="group bg-white dark:bg-[#0b0b14] p-5 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors duration-300"
+                    className="group bg-white dark:bg-white/[0.03] p-5 rounded-xl border border-slate-200/80 dark:border-slate-800/60 hover:border-blue-200 dark:hover:border-blue-500/20 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300"
                   >
+                    <div className="w-6 h-px bg-blue-500/30 dark:bg-blue-400/20 mb-4" />
                     <Icon
                       size={18}
                       className="text-blue-500 dark:text-blue-400 group-hover:translate-x-0.5 transition-transform duration-300"
@@ -75,7 +76,7 @@ export default function About() {
                     >
                       {item.title}
                     </h3>
-                    <p className="mt-1.5 text-[13px] text-slate-500 dark:text-slate-500 leading-relaxed">
+                    <p className="mt-1.5 text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed">
                       {item.description}
                     </p>
                   </motion.div>
@@ -107,7 +108,7 @@ export default function About() {
                     {category.items.map((item) => (
                       <span
                         key={item}
-                        className="px-2.5 py-1 text-xs rounded bg-slate-100 dark:bg-white/[0.04] text-slate-600 dark:text-slate-400 border border-transparent hover:border-blue-200 dark:hover:border-blue-800 transition-colors cursor-default"
+                        className="px-2.5 py-1 text-xs rounded bg-slate-100 dark:bg-white/[0.04] text-slate-600 dark:text-slate-400 border border-transparent cursor-default"
                       >
                         {item}
                       </span>
@@ -126,7 +127,7 @@ export default function About() {
                 教育背景
               </span>
               <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 font-medium">郑州轻工业学院</p>
-              <p className="text-xs text-slate-500 dark:text-slate-500">计算机科学与技术 · 本科 · 2009 — 2013</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">计算机科学与技术 · 本科 · 2009 — 2013</p>
             </motion.div>
           </motion.aside>
         </div>
