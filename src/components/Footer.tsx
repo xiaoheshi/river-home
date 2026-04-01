@@ -1,41 +1,49 @@
-import { Github, Mail, Heart } from "lucide-react";
-import { PROFILE } from "../constants";
+import { Github } from 'lucide-react'
+import { navLinks, profile } from '@/data/resume'
 
-export function Footer() {
-  const currentYear = new Date().getFullYear();
-
+export default function Footer() {
   return (
-    <footer className="border-t border-slate-200/50 bg-white/50 backdrop-blur-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Left - Copyright */}
-          <div className="flex items-center gap-2 text-slate-500 text-sm">
-            <span>© {currentYear} {PROFILE.name}</span>
-            <span className="hidden md:inline">·</span>
-            <span className="hidden md:flex items-center gap-1">
-              Made with <Heart className="h-3 w-3 text-red-500 fill-red-500" /> in {PROFILE.location}
+    <footer className="border-t border-slate-200/80 dark:border-slate-800/60">
+      <div className="mx-auto max-w-6xl px-6 py-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-6">
+            <span
+              className="text-sm font-bold text-slate-900 dark:text-white tracking-tight"
+              style={{ fontFamily: 'var(--font-display)' }}
+            >
+              {profile.name}
             </span>
+            <nav className="hidden sm:flex items-center gap-4">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-[11px] text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
           </div>
 
-          {/* Right - Social Links */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             <a
-              href={PROFILE.contact.github}
+              href={profile.github}
               target="_blank"
-              rel="noreferrer"
-              className="text-slate-400 hover:text-slate-900 transition-colors"
+              rel="noopener noreferrer"
+              className="text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 transition-colors"
+              aria-label="GitHub"
             >
-              <Github className="h-5 w-5" />
+              <Github size={16} />
             </a>
-            <a
-              href={`mailto:${PROFILE.contact.email}`}
-              className="text-slate-400 hover:text-slate-900 transition-colors"
-            >
-              <Mail className="h-5 w-5" />
-            </a>
+            <div className="flex items-center gap-2 text-[11px] text-slate-400 dark:text-slate-700" style={{ fontFamily: 'var(--font-mono)' }}>
+              <span>&copy; {new Date().getFullYear()}</span>
+              <span className="w-px h-3 bg-slate-200 dark:bg-slate-800" />
+              <span>React + Tailwind</span>
+            </div>
           </div>
         </div>
       </div>
     </footer>
-  );
+  )
 }
